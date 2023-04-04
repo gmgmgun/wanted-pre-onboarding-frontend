@@ -10,8 +10,8 @@ function Router() {
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp inputData={INPUT_DATA} />} />
+        <Route path="/signin" element={<SignIn inputData={INPUT_DATA} />} />
         <Route path="/todo" element={<ToDo />} />
       </Routes>
     </BrowserRouter>
@@ -19,3 +19,22 @@ function Router() {
 }
 
 export default Router;
+
+const INPUT_DATA = [
+  {
+    id: 0,
+    name: "userId",
+    type: "text",
+    placeholder: "아이디",
+    infoText: "아이디를 입력해주세요.",
+    autoFocus: true,
+  },
+  {
+    id: 1,
+    name: "userPw",
+    type: "password",
+    placeholder: "비밀번호",
+    infoText: "비밀번호를 입력해주세요.",
+    autoFocus: false,
+  },
+];

@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {BASE_URL} from "../config";
 import styled from "styled-components";
 
-const SignUp = () => {
+const SignUp = ({inputData}) => {
   const [userInputList, setUserInputList] = useState({
     userId: "",
     userPw: "",
@@ -75,35 +75,42 @@ const SignUp = () => {
       });
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/todo");
+    }
+  }, []);
+
   return (
     <StyledSignUpWrapper>
       <StyledTitle>회원가입</StyledTitle>
       <StyledForm onSubmit={onSubmitForm}>
         <StyledInputList>
-          {SIGNUP_INPUT_DATA.map((input) => {
-            const {id, name, type, placeholder, autoFocus, infoText} = input;
-            return (
-              <StyledInputWrap key={id}>
-                <StyledInput
-                  data-testid={
-                    name === "userId" ? "email-input" : "password-input"
-                  }
-                  onChange={onChangeInfo}
-                  placeholder=" "
-                  name={name}
-                  type={type}
-                  autoFocus={autoFocus}
-                  value={userInputList[name] || ""}
-                />
-                <StyledInputLabel>{placeholder}</StyledInputLabel>
-                {printInfoText(name, userInputList[name]) ? (
-                  printInfoText(name, userInputList[name])
-                ) : (
-                  <StyledInfoText>{infoText}</StyledInfoText>
-                )}
-              </StyledInputWrap>
-            );
-          })}
+          {inputData &&
+            inputData.map((input) => {
+              const {id, name, type, placeholder, autoFocus, infoText} = input;
+              return (
+                <StyledInputWrap key={id}>
+                  <StyledInput
+                    data-testid={
+                      name === "userId" ? "email-input" : "password-input"
+                    }
+                    onChange={onChangeInfo}
+                    placeholder=" "
+                    name={name}
+                    type={type}
+                    autoFocus={autoFocus}
+                    value={userInputList[name] || ""}
+                  />
+                  <StyledInputLabel>{placeholder}</StyledInputLabel>
+                  {printInfoText(name, userInputList[name]) ? (
+                    printInfoText(name, userInputList[name])
+                  ) : (
+                    <StyledInfoText>{infoText}</StyledInfoText>
+                  )}
+                </StyledInputWrap>
+              );
+            })}
         </StyledInputList>
         <StyledButton
           data-testid="signup-button"
@@ -213,22 +220,3 @@ const StyledButton = styled.button`
     color: lightgray;
   }
 `;
-
-const SIGNUP_INPUT_DATA = [
-  {
-    id: 0,
-    name: "userId",
-    type: "text",
-    placeholder: "아이디",
-    infoText: "아이디를 입력해주세요.",
-    autoFocus: true,
-  },
-  {
-    id: 1,
-    name: "userPw",
-    type: "password",
-    placeholder: "비밀번호",
-    infoText: "비밀번호를 입력해주세요.",
-    autoFocus: false,
-  },
-];
