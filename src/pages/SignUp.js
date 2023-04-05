@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {BASE_URL} from "../config";
 import styled from "styled-components";
+import {BASE_URL} from "../config";
 
 const SignUp = ({inputData}) => {
   const [userInputList, setUserInputList] = useState({
@@ -13,8 +13,8 @@ const SignUp = ({inputData}) => {
 
   const navigate = useNavigate();
 
-  const idRegEx = /.*@.*/;
   const pwRegEx = /.{8,}/;
+  const idRegEx = /.*@.*/;
 
   const idCheck = idRegEx.test(userId);
   const pwCheck = pwRegEx.test(userPw);
@@ -23,7 +23,6 @@ const SignUp = ({inputData}) => {
 
   const printInfoText = (name, value) => {
     if (!value) return false;
-
     switch (name) {
       case "userId":
         if (!idRegEx.test(value)) {
@@ -31,7 +30,6 @@ const SignUp = ({inputData}) => {
         } else {
           return <StyledInfoText>조건을 충족했습니다!</StyledInfoText>;
         }
-
       case "userPw":
         if (!pwRegEx.test(value)) {
           return (
@@ -40,14 +38,8 @@ const SignUp = ({inputData}) => {
         } else {
           return <StyledInfoText>조건을 충족했습니다!</StyledInfoText>;
         }
-
       default:
     }
-  };
-
-  const onChangeInfo = ({target}) => {
-    const {name, value} = target;
-    setUserInputList({...userInputList, [name]: value});
   };
 
   const onSubmitForm = (e) => {
@@ -73,6 +65,11 @@ const SignUp = ({inputData}) => {
         console.error("Error:", error);
         alert("에러가 발생했습니다. 다시 시도해주세요.");
       });
+  };
+
+  const onChangeInfo = ({target}) => {
+    const {name, value} = target;
+    setUserInputList({...userInputList, [name]: value});
   };
 
   useEffect(() => {
@@ -131,16 +128,14 @@ const StyledSignUpWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 100px;
 `;
 
 const StyledTitle = styled.h1`
+  margin: 100px 0 50px 0;
   font-size: 40px;
 `;
 
-const StyledForm = styled.form`
-  margin-top: 50px;
-`;
+const StyledForm = styled.form``;
 
 const StyledInfoText = styled.p`
   margin: 5px 0px 0px 3px;
