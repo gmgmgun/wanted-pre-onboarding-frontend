@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {BASE_URL} from "../config";
 import styled from "styled-components";
+import {BASE_URL} from "../config";
 
 const SignIn = ({inputData}) => {
   const [userInputList, setUserInputList] = useState({
@@ -23,7 +23,6 @@ const SignIn = ({inputData}) => {
 
   const printInfoText = (name, value) => {
     if (!value) return false;
-
     switch (name) {
       case "userId":
         if (!idRegEx.test(value)) {
@@ -33,7 +32,6 @@ const SignIn = ({inputData}) => {
         } else {
           return <StyledInfoText>조건을 충족했습니다!</StyledInfoText>;
         }
-
       case "userPw":
         if (!pwRegEx.test(value)) {
           return (
@@ -42,7 +40,6 @@ const SignIn = ({inputData}) => {
         } else {
           return <StyledInfoText>조건을 충족했습니다!</StyledInfoText>;
         }
-
       default:
     }
   };
@@ -80,10 +77,10 @@ const SignIn = ({inputData}) => {
     if (localStorage.getItem("token")) {
       navigate("/todo");
     }
-  }, []);
+  }, [navigate]);
 
   return (
-    <StyledSignUpWrapper>
+    <StyledSignInWrapper>
       <StyledTitle>로그인</StyledTitle>
       <StyledForm onSubmit={onSubmitForm}>
         <StyledInputList>
@@ -121,27 +118,25 @@ const SignIn = ({inputData}) => {
           로그인
         </StyledButton>
       </StyledForm>
-    </StyledSignUpWrapper>
+    </StyledSignInWrapper>
   );
 };
 
 export default SignIn;
 
-const StyledSignUpWrapper = styled.div`
+const StyledSignInWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 100px;
 `;
 
 const StyledTitle = styled.h1`
+  margin: 100px 0 50px 0;
   font-size: 40px;
 `;
 
-const StyledForm = styled.form`
-  margin-top: 50px;
-`;
+const StyledForm = styled.form``;
 
 const StyledInfoText = styled.p`
   margin: 5px 0px 0px 3px;
