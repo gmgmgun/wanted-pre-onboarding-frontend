@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import {pageWrapperMixin} from "../styles/mixins";
+import {pageWrapperMixin, titleMixin} from "../styles/mixins";
 import {BASE_URL} from "../config";
 
 const ToDo = () => {
@@ -31,7 +31,8 @@ const ToDo = () => {
         if (response.status === 201) {
           return response.json();
         } else {
-          throw new Error("추가 실패");
+          const ErrorMsg = "내용을 입력해주세요!";
+          throw ErrorMsg;
         }
       })
       .then(({id, todo, isCompleted, userId}) => {
@@ -57,6 +58,7 @@ const ToDo = () => {
     setTodoList((prev) => {
       const newList = [...prev];
       newList[idx]["isModify"] = !newList[idx]["isModify"];
+      newList[idx]["lastModifiedTodo"] = newList[idx]["todo"];
       return newList;
     });
     setRefShouldRender(!refShouldRender);
@@ -86,32 +88,36 @@ const ToDo = () => {
       });
   };
 
-  const onClickBtnSubmit = (event, id, idx) => {
+  const onClickBtnSubmit = (event, id, idx, todo) => {
     event.preventDefault();
-    setTodoList((prev) => {
-      const newList = [...prev];
-      newList[idx]["isModify"] = !newList[idx]["isModify"];
-      return newList;
-    });
-    fetch(`${BASE_URL}/todos/${id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify({
-        todo: todoList[idx]["todo"],
-        isCompleted: todoList[idx]["isCompleted"],
-      }),
-    })
-      .then((response) => {
-        if (response.status !== 200) {
-          alert(`State Code: ${response.status}`);
-        }
-      })
-      .catch((error) => {
-        alert(`Error: ${error}`);
+    if (todo) {
+      setTodoList((prev) => {
+        const newList = [...prev];
+        newList[idx]["isModify"] = !newList[idx]["isModify"];
+        return newList;
       });
+      fetch(`${BASE_URL}/todos/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          todo: todoList[idx]["todo"],
+          isCompleted: todoList[idx]["isCompleted"],
+        }),
+      })
+        .then((response) => {
+          if (response.status !== 200) {
+            alert(`State Code: ${response.status}`);
+          }
+        })
+        .catch((error) => {
+          alert(`Error: ${error}`);
+        });
+    } else {
+      alert("내용을 채워주세요");
+    }
   };
 
   const onClickBtnCancel = (event, idx) => {
@@ -119,6 +125,7 @@ const ToDo = () => {
     setTodoList((prev) => {
       const newList = [...prev];
       newList[idx]["isModify"] = !newList[idx]["isModify"];
+      newList[idx]["todo"] = newList[idx]["lastModifiedTodo"];
       return newList;
     });
   };
@@ -130,8 +137,8 @@ const ToDo = () => {
 
   const onChangeCheckBox = (event, id, idx) => {
     const {checked} = event.target;
-    setTodoList((prevTodoList) => {
-      const newList = [...prevTodoList];
+    setTodoList((prev) => {
+      const newList = [...prev];
       newList[idx]["isCompleted"] = checked;
       return newList;
     });
@@ -199,33 +206,42 @@ const ToDo = () => {
       <StyledTitle>To-Do List</StyledTitle>
       <StyledForm>
         <StyledInput
+          data-testid="new-todo-input"
           onChange={onChangeInput}
           placeholder=" "
           type="text"
           value={inputValue}
         />
-        <StyledButton type="submit" onClick={onClickBtnAdd}>
+        <StyledButtonAdd
+          data-testid="new-todo-add-button"
+          type="submit"
+          onClick={onClickBtnAdd}
+        >
           추가
-        </StyledButton>
+        </StyledButtonAdd>
       </StyledForm>
       <StyledTodoList>
         {todoList.length > 0 &&
           todoList.map(({id, todo, isCompleted}, idx) => (
             <StyledTodoItem key={id}>
-              <StyledCheckbox
-                type="checkbox"
-                checked={isCompleted}
-                onChange={(event) => onChangeCheckBox(event, id, idx)}
-              />
+              <StyledLabel>
+                <StyledCheckbox
+                  type="checkbox"
+                  checked={isCompleted}
+                  onChange={(event) => onChangeCheckBox(event, id, idx)}
+                />
+              </StyledLabel>
               {!todoList[idx]["isModify"] ? (
                 <>
-                  <StyledSpan>{todo}</StyledSpan>
+                  <StyledSpan isCompleted={isCompleted}>{todo}</StyledSpan>
                   <StyledButtonModify
+                    data-testid="modify-button"
                     onClick={(event) => onClickBtnModify(event, idx)}
                   >
                     수정
                   </StyledButtonModify>
                   <StyledButtonDelete
+                    data-testid="delete-button"
                     onClick={(event) => onClickBtnDelete(event, id, idx)}
                   >
                     삭제
@@ -242,16 +258,18 @@ const ToDo = () => {
                   <StyledButtonSubmit
                     data-testid="submit-button"
                     type="submit"
-                    onClick={(event) => onClickBtnSubmit(event, id, idx)}
+                    onClick={(event) =>
+                      onClickBtnSubmit(event, id, idx, todoList[idx]["todo"])
+                    }
                   >
                     제출
                   </StyledButtonSubmit>
-                  <StyledButton
+                  <StyledButtonCancel
                     data-testid="cancel-button"
                     onClick={(event) => onClickBtnCancel(event, idx)}
                   >
                     취소
-                  </StyledButton>
+                  </StyledButtonCancel>
                 </StyledForm>
               )}
             </StyledTodoItem>
@@ -266,8 +284,7 @@ const StyledToDoWrapper = styled.div`
 `;
 
 const StyledTitle = styled.h1`
-  margin: 100px 0 50px 0;
-  font-size: 40px;
+  ${titleMixin};
 `;
 
 const StyledForm = styled.form``;
@@ -296,11 +313,17 @@ const StyledButton = styled.button`
   background-color: #d392ff;
   color: white;
 
+  &:hover {
+    opacity: 0.7;
+  }
+
   &:disabled {
     background-color: rgb(230, 230, 230);
     color: lightgray;
   }
 `;
+
+const StyledButtonAdd = styled(StyledButton)``;
 
 const StyledTodoList = styled.ul`
   margin-top: 20px;
@@ -313,6 +336,8 @@ const StyledTodoItem = styled.li`
   margin-bottom: 20px;
   font-size: 18px;
 `;
+
+const StyledLabel = styled.label``;
 
 const StyledCheckbox = styled.input`
   margin-right: 20px;
@@ -344,15 +369,14 @@ const StyledCheckbox = styled.input`
 `;
 
 const StyledSpan = styled.span`
-  flex-grow: 1;
-  margin-right: 20px;
+  min-width: 200px;
+  margin-right: 8px;
   text-decoration: ${(props) => (props.isCompleted ? "line-through" : "none")};
 `;
 
-const StyledInputModify = styled(StyledInput)``;
-
-const StyledButtonSubmit = styled(StyledButton)`
-  margin-right: 5px;
+const StyledInputModify = styled(StyledInput)`
+  min-width: 195px;
+  height: 40px;
 `;
 
 const StyledButtonModify = styled(StyledButton)`
@@ -360,5 +384,11 @@ const StyledButtonModify = styled(StyledButton)`
 `;
 
 const StyledButtonDelete = styled(StyledButton)``;
+
+const StyledButtonSubmit = styled(StyledButton)`
+  margin-right: 5px;
+`;
+
+const StyledButtonCancel = styled(StyledButton)``;
 
 export default ToDo;

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
+import {pageWrapperMixin, titleMixin} from "../styles/mixins";
 import {BASE_URL} from "../config";
 
 const SignIn = ({inputData}) => {
@@ -125,15 +126,11 @@ const SignIn = ({inputData}) => {
 export default SignIn;
 
 const StyledSignInWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  ${pageWrapperMixin};
 `;
 
 const StyledTitle = styled.h1`
-  margin: 100px 0 50px 0;
-  font-size: 40px;
+  ${titleMixin};
 `;
 
 const StyledForm = styled.form``;
