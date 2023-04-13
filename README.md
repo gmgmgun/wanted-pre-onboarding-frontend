@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# 원티드 Pre-Onboarding 인턴십 선발 과제
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <br>
+  <img src="./images/intro.jpeg">
+  <br>
+</p>
 
-## Available Scripts
+## 프로젝트 소개
 
-In the project directory, you can run:
+<p align="justify">
+JavaScript와 React를 사용하여 회원가입 / 로그인 / Todo 리스트 페이지 및 기능 구현
+</p>
 
-### `npm start`
+<br>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 기술 스택
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| JavaScript | Styled-Components |  React   |
+| :--------: | :---------------: | :------: |
+|   ![js]    |       ![sc]       | ![react] |
 
-### `npm test`
+<br>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 구현 기능
 
-### `npm run build`
+### 회원가입 페이지 내 기능
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- 회원가입 페이지 진입 시 localStorage 내 token 값을 확인해 유효한 JWT 토큰을 발급받은 이력이 있다면 Todo 리스트 페이지로 이동.
+- 정규식을 통해 회원가입 정보를 입력 받을 시 유효성 검사 진행.
+- 라벨을 활용해 필수조건 및 조건 충족 여부 텍스트로 출력.
+- 조건을 모두 충족 시 '가입하기' 버튼 활성화.
+- 아이디 중복 시 alert 출력.
+- 회원가입 완료 시 로그인 페이지로 이동.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 로그인 페이지 내 기능
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- 로그인 페이지 진입 시 localStorage 내 token 값을 확인해 유효한 JWT 토큰을 발급받은 이력이 있다면 todo 페이지로 이동.
+- 정규식을 통해 로그인 정보를 입력 받을 시 유효성 검사 진행.
+- 라벨을 활용해 조건 충족 여부 텍스트로 출력.
+- 조건을 모두 충족 시 '로그인' 버튼 활성화.
+- DB에 입력한 정보가 없을 시 alert 출력.
+- 로그인 완료 시 발급 받은 JWT 토큰을 localStage에 저장.
+- 로그인 완료 시 Todo 리스트 페이지로 이동.
 
-### `npm run eject`
+### Todo 리스트 페이지 내 기능
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+##### 기본 기능
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Todo 리스트 페이지 진입 시 localStorage에 저장된 유효한 토큰이 없다면 로그인 페이지로 이동.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+##### Todo 추가 기능 (Create)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- input에 내용을 입력 받고 추가 버튼 클릭 또는 엔터키 이벤트를 통해 Todo create, input이 비어있을 경우 alert 출력.
+- 수정 버튼 클릭 시 Todo의 텍스트 -> Input으로 변경되면서 포커싱.
+- 수정 도중 취소 버튼을 누르면 기존 내용으로 돌아감.
 
-## Learn More
+##### Todo 리스트 출력 기능 (Read)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- 해당 아이디로 추가한 Todo들을 렌더링이 될때마다 혹은 JWT token이 변경되었을 때 서버로부터 read 후 브라우저에 출력.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+##### Todo 수정 기능 (Update)
 
-### Code Splitting
+- 수정 버튼 클릭 이벤트 시 Todo의 내용이 input으로 변경 후 포커싱.
+- 내용 수정 후 제출 버튼 클릭 또는 엔터키 이벤트로 내용 update.
+- 취소 버튼 클릭 이벤트 시 기존 내용으로 revert.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+##### Todo 삭제 기능 (Delete)
 
-### Analyzing the Bundle Size
+- 삭제 버튼 클릭 이벤트 시 해당 Todo를 삭제.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<br>
 
-### Making a Progressive Web App
+## 프로젝트 배포 링크
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<a href="http://gmgmgun-wanted.shop/signup"> 회원가입 페이지 </a>
+<a href="http://gmgmgun-wanted.shop/signin"> 로그인 페이지 </a>
+<a href="http://gmgmgun-wanted.shop/todo"> Todo 리스트 페이지 </a>
 
-### Advanced Configuration
+- 미로그인 시 Todo 리스트 페이지에 접속하면 자동으로 sigin 페이지로 이동하니 회원가입 및 로그인 후 접속해주세요!
+  <br>
+- 로그인 이후 회원가입 페이지 또는 로그인 페이지로 접속 시 자동으로 Todo 리스트 페이지로 이동하니 다시 회원가입 또는 로그인을 원하시면 Todo 리스트 페이지 내 로그아웃 버튼을 클릭해주세요!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+<!-- Stack Icon Refernces -->
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[js]: /images/javascript-color.svg
+[sc]: /images/styledcomponents-color.svg
+[react]: /images/react-color.svg
