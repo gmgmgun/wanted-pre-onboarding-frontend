@@ -29,7 +29,7 @@ const SignIn: React.FC<{inputData: Input[]}> = ({inputData}) => {
 
   const navigate = useNavigate();
 
-  const idRegEx = /.*@*./;
+  const idRegEx = /.*@.*/;
   const pwRegEx = /.{8,}/;
 
   const idCheck = idRegEx.test(userId);
@@ -92,6 +92,10 @@ const SignIn: React.FC<{inputData: Input[]}> = ({inputData}) => {
       });
   };
 
+  const onClickBtnSignUp = () => {
+    navigate("/signup");
+  };
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       navigate("/todo");
@@ -137,6 +141,9 @@ const SignIn: React.FC<{inputData: Input[]}> = ({inputData}) => {
           로그인
         </StyledButton>
       </StyledForm>
+      <StyledButtonSignUp onClick={onClickBtnSignUp}>
+        회원가입
+      </StyledButtonSignUp>
     </StyledSignInWrapper>
   );
 };
@@ -231,3 +238,5 @@ const StyledButton = styled.button`
     color: lightgray;
   }
 `;
+
+const StyledButtonSignUp = styled(StyledButton)``;

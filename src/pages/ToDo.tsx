@@ -28,6 +28,55 @@ const ToDo = () => {
 
   const navigate = useNavigate();
 
+  const onChangeInput = ({target}: React.ChangeEvent<HTMLInputElement>) => {
+    const {value} = target;
+    setInputValue(value);
+  };
+
+  const onChangeCheckBox = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+    idx: number
+  ) => {
+    const {checked} = event.target;
+    setTodoList((prev) => {
+      const newList = [...prev];
+      newList[idx]["isCompleted"] = checked;
+      return newList;
+    });
+    fetch(`${BASE_URL}/todos/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({
+        todo: todoList[idx]["todo"],
+        isCompleted: checked,
+      }),
+    })
+      .then((response) => {
+        if (response.status !== 200) {
+          alert(`State Code: ${response.status}`);
+        }
+      })
+      .catch((error) => {
+        alert(`Error: ${error}`);
+      });
+  };
+
+  const onChangeModify = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    idx: number
+  ) => {
+    const {value} = event.target;
+    setTodoList((prevTodoList) => {
+      const newList = [...prevTodoList];
+      newList[idx]["todo"] = value;
+      return newList;
+    });
+  };
+
   const onClickBtnSignOut = () => {
     localStorage.removeItem("token");
     setAccessToken(null);
@@ -163,55 +212,6 @@ const ToDo = () => {
     });
   };
 
-  const onChangeInput = ({target}: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = target;
-    setInputValue(value);
-  };
-
-  const onChangeCheckBox = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    id: number,
-    idx: number
-  ) => {
-    const {checked} = event.target;
-    setTodoList((prev) => {
-      const newList = [...prev];
-      newList[idx]["isCompleted"] = checked;
-      return newList;
-    });
-    fetch(`${BASE_URL}/todos/${id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify({
-        todo: todoList[idx]["todo"],
-        isCompleted: checked,
-      }),
-    })
-      .then((response) => {
-        if (response.status !== 200) {
-          alert(`State Code: ${response.status}`);
-        }
-      })
-      .catch((error) => {
-        alert(`Error: ${error}`);
-      });
-  };
-
-  const onChangeModify = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    idx: number
-  ) => {
-    const {value} = event.target;
-    setTodoList((prevTodoList) => {
-      const newList = [...prevTodoList];
-      newList[idx]["todo"] = value;
-      return newList;
-    });
-  };
-
   useEffect(() => {
     fetch(`${BASE_URL}/todos`, {
       method: "GET",
@@ -243,9 +243,6 @@ const ToDo = () => {
 
   return (
     <StyledToDoWrapper>
-      <StyledButtonSignOut onClick={onClickBtnSignOut}>
-        로그아웃
-      </StyledButtonSignOut>
       <StyledTitle>To-Do List</StyledTitle>
       <StyledForm>
         <StyledInput
@@ -320,6 +317,9 @@ const ToDo = () => {
             </StyledTodoItem>
           ))}
       </StyledTodoList>
+      <StyledButtonSignOut onClick={onClickBtnSignOut}>
+        로그아웃
+      </StyledButtonSignOut>
     </StyledToDoWrapper>
   );
 };
@@ -424,13 +424,6 @@ const StyledInputModify = styled(StyledInput)`
   height: 40px;
 `;
 
-const StyledButtonSignOut = styled(StyledButton)`
-  position: absolute;
-  width: 100px;
-  top: 10px;
-  right: 20px;
-`;
-
 const StyledButtonModify = styled(StyledButton)`
   margin-right: 5px;
 `;
@@ -442,5 +435,10 @@ const StyledButtonSubmit = styled(StyledButton)`
 `;
 
 const StyledButtonCancel = styled(StyledButton)``;
+
+const StyledButtonSignOut = styled(StyledButton)`
+  width: 100px;
+  margin-top: 20px;
+`;
 
 export default ToDo;

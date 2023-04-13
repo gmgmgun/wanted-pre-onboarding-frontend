@@ -38,6 +38,7 @@ function Router() {
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
+        <Route path="/" element={<SignUp inputData={INPUT_DATA} />} />
         <Route path="/signup" element={<SignUp inputData={INPUT_DATA} />} />
         <Route path="/signin" element={<SignIn inputData={INPUT_DATA} />} />
         <Route path="/todo" element={<ToDo />} />
