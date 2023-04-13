@@ -29,7 +29,7 @@ const SignUp: React.FC<{inputData: Input[]}> = ({inputData}) => {
 
   const navigate = useNavigate();
 
-  const idRegEx = /.*@*./;
+  const idRegEx = /.*@.*/;
   const pwRegEx = /.{8,}/;
 
   const idCheck = idRegEx.test(userId);
@@ -62,6 +62,11 @@ const SignUp: React.FC<{inputData: Input[]}> = ({inputData}) => {
     }
   };
 
+  const onChangeInfo = ({target}: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = target;
+    setUserInputList({...userInputList, [name]: value});
+  };
+
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     fetch(`${BASE_URL}/auth/signup`, {
@@ -87,9 +92,8 @@ const SignUp: React.FC<{inputData: Input[]}> = ({inputData}) => {
       });
   };
 
-  const onChangeInfo = ({target}: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = target;
-    setUserInputList({...userInputList, [name]: value});
+  const onClickBtnSignIn = () => {
+    navigate("/signin");
   };
 
   useEffect(() => {
@@ -137,6 +141,7 @@ const SignUp: React.FC<{inputData: Input[]}> = ({inputData}) => {
           가입하기
         </StyledButton>
       </StyledForm>
+      <StyledButtonSignIn onClick={onClickBtnSignIn}>로그인</StyledButtonSignIn>
     </StyledSignUpWrapper>
   );
 };
@@ -231,3 +236,5 @@ const StyledButton = styled.button`
     color: lightgray;
   }
 `;
+
+const StyledButtonSignIn = styled(StyledButton)``;
