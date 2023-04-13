@@ -5,22 +5,16 @@ import SignIn from "./pages/SignIn";
 import ToDo from "./pages/ToDo";
 import GlobalStyle from "./styles/GlobalStyle";
 
-function Router() {
-  return (
-    <BrowserRouter>
-      <GlobalStyle />
-      <Routes>
-        <Route path="/signup" element={<SignUp inputData={INPUT_DATA} />} />
-        <Route path="/signin" element={<SignIn inputData={INPUT_DATA} />} />
-        <Route path="/todo" element={<ToDo />} />
-      </Routes>
-    </BrowserRouter>
-  );
+interface InputData {
+  id: number;
+  name: string;
+  type: string;
+  placeholder: string;
+  infoText: string;
+  autoFocus: boolean;
 }
 
-export default Router;
-
-const INPUT_DATA = [
+const INPUT_DATA: InputData[] = [
   {
     id: 0,
     name: "userId",
@@ -38,3 +32,18 @@ const INPUT_DATA = [
     autoFocus: false,
   },
 ];
+
+function Router() {
+  return (
+    <BrowserRouter>
+      <GlobalStyle />
+      <Routes>
+        <Route path="/signup" element={<SignUp inputData={INPUT_DATA} />} />
+        <Route path="/signin" element={<SignIn inputData={INPUT_DATA} />} />
+        <Route path="/todo" element={<ToDo />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default Router;

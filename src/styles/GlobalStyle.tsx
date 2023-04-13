@@ -1,7 +1,11 @@
-import {createGlobalStyle} from "styled-components";
+import {createGlobalStyle, DefaultTheme} from "styled-components";
 import reset from "styled-reset";
 
-const GlobalStyle = createGlobalStyle`
+interface GlobalStyleProps {
+  theme: DefaultTheme;
+}
+
+const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
     ${reset};
 
     * {
@@ -25,6 +29,6 @@ const GlobalStyle = createGlobalStyle`
       background-color : white;   
       border : none;
     }    
-    `;
+`;
 
 export default GlobalStyle;

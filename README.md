@@ -16,9 +16,20 @@ JavaScript와 React를 사용하여 회원가입 / 로그인 / Todo 리스트 �
 
 ## 🔨 기술 스택
 
-| JavaScript | Styled-Components |  React   |
-| :--------: | :---------------: | :------: |
-|   ![js]    |       ![sc]       | ![react] |
+<table>
+  <tr>
+    <th style="width:20%">JavaScript</th>
+    <th style="width:20%">TypeScript</th>
+    <th style="width:20%">Styled-Components</th>
+    <th style="width:20%">React</th>
+  </tr>
+  <tr>
+    <td><img src="./images/javascript-color.svg" alt="JavaScript" /></td>
+    <td><img src="./images/typescript-color.svg" alt="TypeScript" /></td>
+    <td><img src="./images/styledcomponents-color.svg" alt="Styled-Components" /></td>
+    <td><img src="./images/react-color.svg" alt="React" /></td>
+  </tr>
+</table>
 
 <br>
 
@@ -73,9 +84,7 @@ JavaScript와 React를 사용하여 회원가입 / 로그인 / Todo 리스트 �
 ## 🥬 프로젝트 배포 링크
 
 <a href="http://gmgmgun-wanted.shop/signup"> 회원가입 페이지 </a>
-<br>
 <a href="http://gmgmgun-wanted.shop/signin"> 로그인 페이지 </a>
-<br>
 <a href="http://gmgmgun-wanted.shop/todo"> Todo 리스트 페이지 </a>
 
 - 미로그인 시 Todo 리스트 페이지에 접속하면 자동으로 sigin 페이지로 이동하니 회원가입 및 로그인 후 접속해주세요!
@@ -85,5 +94,6 @@ JavaScript와 React를 사용하여 회원가입 / 로그인 / Todo 리스트 �
 <!-- Stack Icon Refernces -->
 
 [js]: /images/javascript-color.svg
+[ts]: /images/typescript-color.svg
 [sc]: /images/styledcomponents-color.svg
 [react]: /images/react-color.svg
