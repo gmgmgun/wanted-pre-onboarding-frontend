@@ -4,8 +4,23 @@ import styled from "styled-components";
 import {pageWrapperMixin, titleMixin} from "../styles/mixins";
 import {BASE_URL} from "../config";
 
-const SignUp = ({inputData}) => {
-  const [userInputList, setUserInputList] = useState({
+interface Input {
+  id: number;
+  name: string;
+  type: string;
+  placeholder: string;
+  autoFocus?: boolean;
+  infoText: string;
+}
+
+interface UserInputList {
+  userId: string;
+  userPw: string;
+  [key: string]: string;
+}
+
+const SignIn: React.FC<{inputData: Input[]}> = ({inputData}) => {
+  const [userInputList, setUserInputList] = useState<UserInputList>({
     userId: "",
     userPw: "",
   });
@@ -14,20 +29,25 @@ const SignUp = ({inputData}) => {
 
   const navigate = useNavigate();
 
-  const pwRegEx = /.{8,}/;
   const idRegEx = /.*@.*/;
+  const pwRegEx = /.{8,}/;
 
   const idCheck = idRegEx.test(userId);
   const pwCheck = pwRegEx.test(userPw);
 
   const isValid = idCheck && pwCheck;
 
-  const printInfoText = (name, value) => {
+  const printInfoText = (
+    name: string,
+    value: string
+  ): JSX.Element | boolean => {
     if (!value) return false;
     switch (name) {
       case "userId":
         if (!idRegEx.test(value)) {
-          return <StyledInfoText>아이디에 @를 포함시켜 주세요.</StyledInfoText>;
+          return (
+            <StyledInfoText>아이디에 @가 포함되어야 합니다.</StyledInfoText>
+          );
         } else {
           return <StyledInfoText>조건을 충족했습니다!</StyledInfoText>;
         }
@@ -40,12 +60,18 @@ const SignUp = ({inputData}) => {
           return <StyledInfoText>조건을 충족했습니다!</StyledInfoText>;
         }
       default:
+        return false;
     }
   };
 
-  const onSubmitForm = (e) => {
+  const onChangeInfo = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const {name, value} = e.target;
+    setUserInputList({...userInputList, [name]: value});
+  };
+
+  const onSubmitForm = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    fetch(`${BASE_URL}/auth/signup`, {
+    fetch(`${BASE_URL}/auth/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -55,33 +81,26 @@ const SignUp = ({inputData}) => {
         password: userPw,
       }),
     })
-      .then((response) => {
-        if (response.status === 201) {
-          navigate("/signin");
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.access_token) {
+          localStorage.setItem("token", result.access_token);
+          navigate("/todo");
         } else {
-          alert("이미 가입된 이메일입니다.");
+          alert("입력이 틀렸습니다");
         }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("에러가 발생했습니다. 다시 시도해주세요.");
       });
-  };
-
-  const onChangeInfo = ({target}) => {
-    const {name, value} = target;
-    setUserInputList({...userInputList, [name]: value});
   };
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
       navigate("/todo");
     }
-  }, []);
+  }, [navigate]);
 
   return (
-    <StyledSignUpWrapper>
-      <StyledTitle>회원가입</StyledTitle>
+    <StyledSignInWrapper>
+      <StyledTitle>로그인</StyledTitle>
       <StyledForm onSubmit={onSubmitForm}>
         <StyledInputList>
           {inputData &&
@@ -111,20 +130,20 @@ const SignUp = ({inputData}) => {
             })}
         </StyledInputList>
         <StyledButton
-          data-testid="signup-button"
+          data-testid="signin-button"
           type="submit"
           disabled={!isValid}
         >
-          가입하기
+          로그인
         </StyledButton>
       </StyledForm>
-    </StyledSignUpWrapper>
+    </StyledSignInWrapper>
   );
 };
 
-export default SignUp;
+export default SignIn;
 
-const StyledSignUpWrapper = styled.div`
+const StyledSignInWrapper = styled.div`
   ${pageWrapperMixin};
 `;
 

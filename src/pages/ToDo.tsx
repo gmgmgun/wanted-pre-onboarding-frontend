@@ -4,12 +4,27 @@ import styled from "styled-components";
 import {pageWrapperMixin, titleMixin} from "../styles/mixins";
 import {BASE_URL} from "../config";
 
+interface TodoItemType {
+  id: number;
+  todo: string;
+  isCompleted: boolean;
+  userId: number;
+  isModify: boolean;
+  lastModifiedTodo?: string;
+}
+
+interface StyledSpanProps {
+  isCompleted: boolean;
+}
+
 const ToDo = () => {
-  const [todoList, setTodoList] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  const [refShouldRender, setRefShouldRender] = useState(false);
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("token"));
-  const modifyInputRef = useRef(null);
+  const [todoList, setTodoList] = useState<TodoItemType[]>([]);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [refShouldRender, setRefShouldRender] = useState<boolean>(false);
+  const [accessToken, setAccessToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
+  const modifyInputRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
 
@@ -18,7 +33,7 @@ const ToDo = () => {
     setAccessToken(null);
   };
 
-  const onClickBtnAdd = (event) => {
+  const onClickBtnAdd = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     fetch(`${BASE_URL}/todos`, {
       method: "POST",
@@ -56,7 +71,10 @@ const ToDo = () => {
       });
   };
 
-  const onClickBtnModify = (event, idx) => {
+  const onClickBtnModify = (
+    event: React.FormEvent<HTMLButtonElement>,
+    idx: number
+  ) => {
     event.preventDefault();
     setTodoList((prev) => {
       const newList = [...prev];
@@ -67,7 +85,11 @@ const ToDo = () => {
     setRefShouldRender(!refShouldRender);
   };
 
-  const onClickBtnDelete = (event, id, idx) => {
+  const onClickBtnDelete = (
+    event: React.FormEvent<HTMLButtonElement>,
+    id: number,
+    idx: number
+  ) => {
     event.preventDefault();
     fetch(`${BASE_URL}/todos/${id}`, {
       method: "DELETE",
@@ -91,7 +113,12 @@ const ToDo = () => {
       });
   };
 
-  const onClickBtnSubmit = (event, id, idx, todo) => {
+  const onClickBtnSubmit = (
+    event: React.FormEvent<HTMLButtonElement>,
+    id: number,
+    idx: number,
+    todo: string
+  ) => {
     event.preventDefault();
     if (todo) {
       setTodoList((prev) => {
@@ -123,22 +150,29 @@ const ToDo = () => {
     }
   };
 
-  const onClickBtnCancel = (event, idx) => {
+  const onClickBtnCancel = (
+    event: React.FormEvent<HTMLButtonElement>,
+    idx: number
+  ) => {
     event.preventDefault();
     setTodoList((prev) => {
       const newList = [...prev];
       newList[idx]["isModify"] = !newList[idx]["isModify"];
-      newList[idx]["todo"] = newList[idx]["lastModifiedTodo"];
+      newList[idx]["todo"] = newList[idx]["lastModifiedTodo"]!;
       return newList;
     });
   };
 
-  const onChangeInput = ({target}) => {
+  const onChangeInput = ({target}: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = target;
     setInputValue(value);
   };
 
-  const onChangeCheckBox = (event, id, idx) => {
+  const onChangeCheckBox = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+    idx: number
+  ) => {
     const {checked} = event.target;
     setTodoList((prev) => {
       const newList = [...prev];
@@ -166,7 +200,10 @@ const ToDo = () => {
       });
   };
 
-  const onChangeModify = (event, idx) => {
+  const onChangeModify = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    idx: number
+  ) => {
     const {value} = event.target;
     setTodoList((prevTodoList) => {
       const newList = [...prevTodoList];
@@ -374,7 +411,7 @@ const StyledCheckbox = styled.input`
   }
 `;
 
-const StyledSpan = styled.span`
+const StyledSpan = styled.span<StyledSpanProps>`
   min-width: 200px;
   margin-right: 8px;
   text-decoration: ${(props) => (props.isCompleted ? "line-through" : "none")};
