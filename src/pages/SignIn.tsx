@@ -92,7 +92,7 @@ const SignIn: React.FC<{inputData: Input[]}> = ({inputData}) => {
       });
   };
 
-  const onClickBtnSignUp = () => {
+  const onClickBtnGoToSignUp = () => {
     navigate("/signup");
   };
 
@@ -141,9 +141,9 @@ const SignIn: React.FC<{inputData: Input[]}> = ({inputData}) => {
           로그인
         </StyledButton>
       </StyledForm>
-      <StyledButtonSignUp onClick={onClickBtnSignUp}>
-        회원가입
-      </StyledButtonSignUp>
+      <StyledButtonGoToSignUp onClick={onClickBtnGoToSignUp}>
+        회원가입 하러 가기
+      </StyledButtonGoToSignUp>
     </StyledSignInWrapper>
   );
 };
@@ -239,4 +239,4 @@ const StyledButton = styled.button`
   }
 `;
 
-const StyledButtonSignUp = styled(StyledButton)``;
+const StyledButtonGoToSignUp = styled(StyledButton)``;
