@@ -29,15 +29,18 @@ const SignUp: React.FC<{inputData: Input[]}> = ({inputData}) => {
 
   const navigate = useNavigate();
 
+  const idRegEx = /.*@*./;
   const pwRegEx = /.{8,}/;
-  const idRegEx = /.@./;
 
   const idCheck = idRegEx.test(userId);
   const pwCheck = pwRegEx.test(userPw);
 
   const isValid = idCheck && pwCheck;
 
-  const printInfoText = (name: string, value: string) => {
+  const printInfoText = (
+    name: string,
+    value: string
+  ): JSX.Element | boolean => {
     if (!value) return false;
     switch (name) {
       case "userId":
@@ -55,7 +58,7 @@ const SignUp: React.FC<{inputData: Input[]}> = ({inputData}) => {
           return <StyledInfoText>조건을 충족했습니다!</StyledInfoText>;
         }
       default:
-        return null;
+        return false;
     }
   };
 

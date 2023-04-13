@@ -18,10 +18,10 @@ JavaScript와 React를 사용하여 회원가입 / 로그인 / Todo 리스트 �
 
 <table>
   <tr>
-    <th style="width:20%">JavaScript</th>
-    <th style="width:20%">TypeScript</th>
-    <th style="width:20%">Styled-Components</th>
-    <th style="width:20%">React</th>
+    <th style="width:25%">JavaScript</th>
+    <th style="width:25%">TypeScript</th>
+    <th style="width:25%">Styled-Components</th>
+    <th style="width:25%">React</th>
   </tr>
   <tr>
     <td><img src="./images/javascript-color.svg" alt="JavaScript" /></td>
@@ -61,7 +61,7 @@ JavaScript와 React를 사용하여 회원가입 / 로그인 / Todo 리스트 �
 
 ##### 📓 Todo 추가 기능 (Create)
 
-- input에 내용을 입력 받고 추가 버튼 클릭 또는 엔터키 이벤트를 통해 Todo create, input이 비어있을 경우 alert 출력.
+- input에 내용을 입력 받고 추가 버튼 클릭 또는 엔터키 이벤트를 통해 Todo create, input이 비어있을 경우 '추가' 버튼 비활성화.
 - 수정 버튼 클릭 시 Todo의 텍스트 -> Input으로 변경되면서 포커싱.
 - 수정 도중 취소 버튼을 누르면 기존 내용으로 돌아감.
 
@@ -72,6 +72,7 @@ JavaScript와 React를 사용하여 회원가입 / 로그인 / Todo 리스트 �
 ##### 📓 Todo 수정 기능 (Update)
 
 - 수정 버튼 클릭 이벤트 시 Todo의 내용이 input으로 변경 후 포커싱.
+- input이 비어있을 경우 '제출' 버튼 비활성화
 - 내용 수정 후 제출 버튼 클릭 또는 엔터키 이벤트로 내용 update.
 - 취소 버튼 클릭 이벤트 시 기존 내용으로 revert.
 
