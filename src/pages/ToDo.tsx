@@ -259,6 +259,7 @@ const ToDo = () => {
           data-testid="new-todo-add-button"
           type="submit"
           onClick={onClickBtnAdd}
+          disabled={inputValue === ""}
         >
           추가
         </StyledButtonAdd>
@@ -304,6 +305,7 @@ const ToDo = () => {
                     onClick={(event) =>
                       onClickBtnSubmit(event, id, idx, todoList[idx]["todo"])
                     }
+                    disabled={todoList[idx]["todo"] === ""}
                   >
                     제출
                   </StyledButtonSubmit>
@@ -362,7 +364,7 @@ const StyledButton = styled.button`
 
   &:disabled {
     background-color: rgb(230, 230, 230);
-    color: lightgray;
+    color: rgb(200, 200, 200);
   }
 `;
 

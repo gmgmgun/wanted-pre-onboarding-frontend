@@ -9,7 +9,7 @@ interface Input {
   name: string;
   type: string;
   placeholder: string;
-  autoFocus?: boolean;
+  autoFocus: boolean;
   infoText: string;
 }
 
@@ -29,7 +29,7 @@ const SignIn: React.FC<{inputData: Input[]}> = ({inputData}) => {
 
   const navigate = useNavigate();
 
-  const idRegEx = /.*@.*/;
+  const idRegEx = /.*@*./;
   const pwRegEx = /.{8,}/;
 
   const idCheck = idRegEx.test(userId);
