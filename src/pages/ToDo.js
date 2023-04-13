@@ -8,12 +8,15 @@ const ToDo = () => {
   const [todoList, setTodoList] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [refShouldRender, setRefShouldRender] = useState(false);
-
+  const [accessToken, setAccessToken] = useState(localStorage.getItem("token"));
   const modifyInputRef = useRef(null);
 
   const navigate = useNavigate();
 
-  const accessToken = localStorage.getItem("token");
+  const onClickBtnSignOut = () => {
+    localStorage.removeItem("token");
+    setAccessToken(null);
+  };
 
   const onClickBtnAdd = (event) => {
     event.preventDefault();
@@ -187,13 +190,13 @@ const ToDo = () => {
         console.error("Error:", error);
         alert(`Error: ${error}`);
       });
-  }, [accessToken]);
+  }, []);
 
   useEffect(() => {
     if (!accessToken) {
       navigate("/signin");
     }
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => {
     if (modifyInputRef.current) {
@@ -203,6 +206,9 @@ const ToDo = () => {
 
   return (
     <StyledToDoWrapper>
+      <StyledButtonSignOut onClick={onClickBtnSignOut}>
+        로그아웃
+      </StyledButtonSignOut>
       <StyledTitle>To-Do List</StyledTitle>
       <StyledForm>
         <StyledInput
@@ -377,6 +383,13 @@ const StyledSpan = styled.span`
 const StyledInputModify = styled(StyledInput)`
   min-width: 195px;
   height: 40px;
+`;
+
+const StyledButtonSignOut = styled(StyledButton)`
+  position: absolute;
+  width: 100px;
+  top: 10px;
+  right: 20px;
 `;
 
 const StyledButtonModify = styled(StyledButton)`

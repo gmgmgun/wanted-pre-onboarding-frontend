@@ -68,7 +68,6 @@ const SignIn = ({inputData}) => {
           localStorage.setItem("token", result.access_token);
           navigate("/todo");
         } else {
-          localStorage.setItem("token", "");
           alert("입력이 틀렸습니다");
         }
       });
